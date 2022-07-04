@@ -1,10 +1,10 @@
 ## This script was written by Alyce Fields, Larissa Cortes Morales, and Allyn Schoeffler
 # Loyola Univeristy New Orleans
 
-#edit this section for pdb directory and desired color for histogram
+#edit this section for pdb directory, desired color for histogram, and a path & name for your output file
 user_path_to_pdbs1 = "/Users/larissacortes/Desktop/SchoefflerLab/Scripts/1qtm/Mesophiles/Pro/"
 user_color = 'blue'
-user_output_distance_file = "/Users/larissacortes/Desktop/SchoefflerLab/Scripts/1qtm/Mesophiles/Pro/disstance_list.txt"
+user_output_distance_file = "/Users/larissacortes/Desktop/SchoefflerLab/Scripts/1qtm/Mesophiles/Pro/distance_list.txt"
 
 #Importing the PDB package from biopandas
 from re import A
@@ -58,7 +58,7 @@ def distanceArrayMaker (pdbFile, cutoff):
 
 ### Parameters below must be adjusted to match the desired ligand
 
-#Getting the biopandas pdb to fetch the PDB file from the Protein Data Bank 
+#Getting the biopandas pdb function to fetch the PDB file from the Protein Data Bank 
 ppdb = ppdb().fetch_pdb('1qtm')
 #creating DNA dataframe 
 DA_df = ppdb.df['ATOM'][ppdb.df['ATOM']['residue_name']=='DA']
@@ -87,10 +87,12 @@ for fileName in pdb_files1:
 Array_of_Distances1 = np.concatenate((set_of_distances1), axis=0)
 average_number_of_distances = numpy.average(number_of_distances_list)
 stdev_number_of_distances = numpy.std(number_of_distances_list)
-output_distance_file.write("average:")
+output_distance_file.write("average: ")
 output_distance_file.write(str(average_number_of_distances))
-output_distance_file.write("standard deviation:")
+output_distance_file.write('\n')
+output_distance_file.write("standard deviation: ")
 output_distance_file.write(str(stdev_number_of_distances))
+output_distance_file.write('\n')
 
 #needed for histogram 
 import matplotlib.pyplot as plt 
