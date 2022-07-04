@@ -4,6 +4,7 @@
 #edit this section for pdb directory and desired color for histogram
 user_path_to_pdbs1 = "/Users/larissacortes/Desktop/SchoefflerLab/Scripts/1qtm/Mesophiles/Pro/"
 user_color = 'blue'
+user_output_distance_file = "/Users/larissacortes/Desktop/SchoefflerLab/Scripts/1qtm/Mesophiles/Pro/disstance_list.txt"
 
 #Importing the PDB package from biopandas
 from re import A
@@ -67,20 +68,33 @@ DT_df = ppdb.df['ATOM'][ppdb.df['ATOM']['residue_name']=='DT']
 frames = [DA_df, DG_df, DC_df, DT_df]
 DNA_df = pd.concat(frames)
 
+output_distance_file = open(user_output_distance_file, 'w')
 set_of_distances1 = []
 set_of_colors1 = []
+number_of_distances_list = []
 #for loop to avoid adding filenames
 for fileName in pdb_files1:
     Distances1 = distanceArrayMaker (fileName, 5)
     set_of_distances1.append (Distances1)
     set_of_colors1.append(user_color)
+    number_of_distances = len(Distances1)
+    output_distance_file.write(fileName)
+    output_distance_file.write(', ')
+    output_distance_file.write(str(number_of_distances))
+    output_distance_file.write('\n')
+    number_of_distances_list.append(number_of_distances)
     
 Array_of_Distances1 = np.concatenate((set_of_distances1), axis=0)
+average_number_of_distances = numpy.average(number_of_distances_list)
+stdev_number_of_distances = numpy.std(number_of_distances_list)
+output_distance_file.write("average:")
+output_distance_file.write(str(average_number_of_distances))
+output_distance_file.write("standard deviation:")
+output_distance_file.write(str(stdev_number_of_distances))
 
 #needed for histogram 
 import matplotlib.pyplot as plt 
 
-
-#defining function for histogram
+#plot and display histogram
 plt.hist (Array_of_Distances1, color=set_of_colors1)
 plt.show ()
